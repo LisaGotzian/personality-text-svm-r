@@ -1,0 +1,100 @@
+% Template from Springer
+%
+% First comes an example EPS file -- just ignore it and
+% proceed on the \documentclass line
+% your LaTeX will extract the file if required
+% \begin{filecontents*}{example.eps}
+% %!PS-Adobe-3.0 EPSF-3.0
+% %%BoundingBox: 19 19 221 221
+% %%CreationDate: Mon Sep 29 1997
+% %%Creator: programmed by hand (JK)
+% %%EndComments
+% gsave
+% newpath
+%   20 20 moveto
+%   20 220 lineto
+%   220 220 lineto
+%   220 20 lineto
+% closepath
+% 2 setlinewidth
+% gsave
+%   .4 setgray fill
+% grestore
+% stroke
+% grestore
+% \end{filecontents*}
+%
+\RequirePackage{fix-cm}
+%
+%\documentclass{svjour3}                     % onecolumn (standard format)
+%\documentclass[smallcondensed]{svjour3}     % onecolumn (ditto)
+\documentclass[smallextended]{svjour3}       % onecolumn (second format)
+%\documentclass[twocolumn]{svjour3}          % twocolumn
+%
+\smartqed  % flush right qed marks, e.g. at end of proof
+%
+\usepackage{graphicx}
+\usepackage{caption} % for subfigures
+\usepackage{subcaption} % for subfigures
+\usepackage{setspace, amsmath}
+\usepackage{etoolbox} % for block quotes
+\AtBeginEnvironment{quote}{\singlespacing\small} %for block quotes
+
+\newcommand{\comm}[1]{}
+%
+% \usepackage{mathptmx}      % use Times fonts if available on your TeX system
+%
+% insert here the call for the packages your document requires
+%\usepackage{latexsym}
+% etc.
+%
+% please place your own definitions here and don't use \def but
+% \newcommand{}{}
+%
+% Insert the name of "your journal" with
+% \journalname{myjournal}
+%
+\begin{document}
+
+\title{Predicting personality based on social media posts
+}
+%\subtitle{Do you have a subtitle?\\ If so, write it here}
+
+%\titlerunning{Short form of title}        % if too long for running head
+
+\author{Lisa Gotzian 
+}
+
+\institute{Lisa Gotzian \\
+              M. Sc. \textit{Management \& Data Science}\\
+              \email{lisa.gotzian@stud.leuphana.de}
+}
+
+\date{Received: March 15, 2019}
+
+
+\maketitle
+
+\begin{abstract}
+Personality prediction from publicly available data such as social media behavior and social media posts has gained immense interest in research. Knowing a person's personality based on the Big 5 has vast implications for one's privacy. Therefore, information on the Big 5 is heavily restricted. Here, a dataset with MBTI personalities is analyzed to find resemblance with the Five Factor Model and to determine if the more accessible MBTI personality types pose a similar threat on privacy. The data comes from a personality forum. An SVM with a number of psycholinguistic features such as a word-emotion lexicon reaches 54\% accuracy, beating current results in research. However, the dataset has to be treated carefully as it was collected from personality enthusiasts and might facilitate personality prediction.
+\keywords{MBTI \and Personality Prediction \and Text Analysis \and Support Vector Machines}
+% \PACS{PACS code1 \and PACS code2 \and more}
+% \subclass{MSC code1 \and MSC code2 \and more}
+\end{abstract}
+
+\input{01_Introduction.tex}
+\input{02_Data.tex}
+\input{03_Methods.tex}
+\input{04_Results.tex}
+\input{05_Discussion.tex}
+
+
+%BibTeX NOT BibLatex!!
+% BibTeX users please use one of
+%\bibliographystyle{spbasic}      % basic style, author-year citations
+\bibliographystyle{spmpsci}      % mathematics and physical sciences
+%\bibliographystyle{spphys}       % APS-like style for physics
+\bibliography{References}   % name your BibTeX data base
+
+\end{document}
+

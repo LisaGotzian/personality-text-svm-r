@@ -1,0 +1,52 @@
+\section{Methods}
+\label{sec:methods}
+The prediction of personalities from text is multiple classes classification problem that requires a stable model that can handle many parameters as text produces a vast amount of model parameters. Support Vector Machines (SVMS) are known to produce stable classification results based on text because they hardly overfit. Additionally, text is usually linearly separable, allowing SVMs to determine a margin between categories \cite{carbonell_text_1998}.\\
+SVMs are mainly used for supervised classification tasks as present here. For linearly separable data, they do not only separate the data by a line but provide a margin between the data points. The width of the margin is determined by the number of support vectors. These support vectors are the data points that are on the margin or within the margin. Usually, this line is a hyperplane in a high-dimensional space. In this high-dimensional space, the data is then linearly separable. The important mechanism for this is the choice of the kernel function that maps the data to this space.\\
+An SVM minimizes the term with quadratic norm ${\frac  {1}{2}}||{\mathbf  w}||_{2}^{2}$ and allows for a soft margin for error $\xi_i$. If there are missclassified samples, the first constraint in equation \ref{eq:1} accounts for the error $\xi_i$ caused by these samples. If there wasn't such error term, the data needed to be linearly seperable with no missclassified samples or the first constraint could never be met. The error is kept low by being part of the objective function in return.\\
+\begin{equation}
+\begin{array}{rrl}
+    \text{min} \quad &{\frac  {1}{2}}||{\mathbf  w}||_{2}^{2}+C\sum _{{i=1}}^{m}\xi _{i} & \\[10pt]
+    \text{s.t.} \quad & y_{i} (\langle \mathbf{w,x_{i}} \rangle +b) &\geq 1-\xi _{i}\\
+    &1&\leq i \leq m 
+\end{array}
+\label{eq:1}
+\end{equation}
+
+This optimization problem is usually solved using dual formulation with Lagrange multipliers and the KKT, making use of the fact that $w$ can be expressed in terms of the Langrangian multipliers $\alpha$ and $y$.
+
+\begin{equation}
+    \begin{array}{cl}
+         \max_{\alpha} \quad &\sum _{{i=1}}^{m}\alpha _{i}-{\frac  {1}{2}}\sum _{{i=1}}^{m}\sum _{{j=1}}^{m}\alpha _{i}\alpha _{j}y_{i}y_{j}\langle {\mathbf  x}_{i},{\mathbf  x}_{j}\rangle \\[10pt]
+         \text{s.t.} \quad &{\displaystyle 0\leq \alpha _{i}\leq C}\\
+         &\sum _{{i=1}}^{m}\alpha _{i}y_{i}=0
+    \end{array}
+\end{equation}
+
+This yields the classification rule similar to the first constraint in equation \ref{eq:1}:
+
+\begin{equation}
+    \begin{array}{c}
+        {\displaystyle f(\mathbf {x} )=\operatorname {sgn}(\langle \mathbf {w,x} \rangle +b)=\operatorname {sgn} \left(\sum _{i=1}^{m}\alpha _{i}y_{i}\langle \mathbf {x_{i},x} \rangle +b\right)}
+    \end{array}
+\end{equation}
+
+The data points that form the margin in the end are the ones where the Lagrangian multipliers are not 0, $\alpha_i \neq 0$.
+
+\paragraph{Pre-processing the data} All texts are pre-processed and cleaned, in particular:
+A DocumentTermMatrix of ngrams (3-grams) was created. The SVM ran with n-grams to preserve all sequential information from the posts. After that, stopwords that carry little or no meaning have been removed. All text was then transformed into lowerspace to account for spelling errors. All word or ngram occurrences have been weighted using tf.idf to even out different document lengths:
+
+\begin{equation}
+\begin{array}{rl}
+    tfidf_t &= f_{t,d} \cdot \log{\frac{N}{df_t}}\\[10pt]
+    tfidf_t &= \text{weight of term } t\\
+    f_{t,d} &= \text{occurrences of term $t$ in document $d$}\\
+    N &= \text{total documents}\\
+    d_f &= \text{number of documents containing $t$}
+\end{array}
+\end{equation}
+
+\paragraph{Features} General quantitative features such as average word length, total words per person and average words per post have been reported.\\
+Additionally, the relationship between text and personality allows for linguistic features to be manually extracted.\\
+A full set of possibly indicative groups of words and concepts has been added using the word-emotion lexicon by Mohammed \& Turney \cite{mohammad_emotions_2010}. Especially the intuition/sensing dimension can be distinguished by the use of emotions \cite{gjurkovic_reddit:_2018}. Additionally, extraverts post more links \cite{blackwell_extraversion_2017}. They tend to refer more to themselves and use actual self-representation \cite{seidman_self-presentation_2013}. Hence, words like "me", "myself" or "I" resemble the feature "self-representation". Extraverts also communicate more and might thereby use more words in general \cite{seidman_self-presentation_2013}, to explain just a few features used.\\
+Following the observations of the data, there will be 6 main models:
+One model only uses the features, one SVM uses only the text, one then resembles the two. The \textit{text + features} model is then cleaned by removing one's own personality type and predicting only with the 7 more frequent classes.\\ Hyperparameters were tuned using grid search and a linear kernel. All SVMs were implemented in R using the e1071 library.
